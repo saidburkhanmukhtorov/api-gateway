@@ -28,8 +28,10 @@ type ReservationServiceClient interface {
 	DeleteReservation(ctx context.Context, in *DeleteReservationRequest, opts ...grpc.CallOption) (*DeleteReservationResponse, error)
 	ListReservations(ctx context.Context, in *ListReservationsRequest, opts ...grpc.CallOption) (*ListReservationsResponse, error)
 	CheckAvailability(ctx context.Context, in *CheckAvailabilityRequest, opts ...grpc.CallOption) (*CheckAvailabilityResponse, error)
-	OrderReservation(ctx context.Context, in *OrderReservationRequest, opts ...grpc.CallOption) (*OrderReservationResponse, error)
 	PaymentReservation(ctx context.Context, in *PaymentReservationRequest, opts ...grpc.CallOption) (*PaymentReservationResponse, error)
+	FoodList(ctx context.Context, in *OrderFoodListReq, opts ...grpc.CallOption) (*OrderFoodListRes, error)
+	OrderFood(ctx context.Context, in *OrderFoodReq, opts ...grpc.CallOption) (*OrderFoodRes, error)
+	IsValidReservation(ctx context.Context, in *IsValidReq, opts ...grpc.CallOption) (*IsValidRes, error)
 }
 
 type reservationServiceClient struct {
@@ -94,18 +96,36 @@ func (c *reservationServiceClient) CheckAvailability(ctx context.Context, in *Ch
 	return out, nil
 }
 
-func (c *reservationServiceClient) OrderReservation(ctx context.Context, in *OrderReservationRequest, opts ...grpc.CallOption) (*OrderReservationResponse, error) {
-	out := new(OrderReservationResponse)
-	err := c.cc.Invoke(ctx, "/reservation.ReservationService/OrderReservation", in, out, opts...)
+func (c *reservationServiceClient) PaymentReservation(ctx context.Context, in *PaymentReservationRequest, opts ...grpc.CallOption) (*PaymentReservationResponse, error) {
+	out := new(PaymentReservationResponse)
+	err := c.cc.Invoke(ctx, "/reservation.ReservationService/PaymentReservation", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *reservationServiceClient) PaymentReservation(ctx context.Context, in *PaymentReservationRequest, opts ...grpc.CallOption) (*PaymentReservationResponse, error) {
-	out := new(PaymentReservationResponse)
-	err := c.cc.Invoke(ctx, "/reservation.ReservationService/PaymentReservation", in, out, opts...)
+func (c *reservationServiceClient) FoodList(ctx context.Context, in *OrderFoodListReq, opts ...grpc.CallOption) (*OrderFoodListRes, error) {
+	out := new(OrderFoodListRes)
+	err := c.cc.Invoke(ctx, "/reservation.ReservationService/FoodList", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *reservationServiceClient) OrderFood(ctx context.Context, in *OrderFoodReq, opts ...grpc.CallOption) (*OrderFoodRes, error) {
+	out := new(OrderFoodRes)
+	err := c.cc.Invoke(ctx, "/reservation.ReservationService/OrderFood", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *reservationServiceClient) IsValidReservation(ctx context.Context, in *IsValidReq, opts ...grpc.CallOption) (*IsValidRes, error) {
+	out := new(IsValidRes)
+	err := c.cc.Invoke(ctx, "/reservation.ReservationService/IsValidReservation", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -122,8 +142,10 @@ type ReservationServiceServer interface {
 	DeleteReservation(context.Context, *DeleteReservationRequest) (*DeleteReservationResponse, error)
 	ListReservations(context.Context, *ListReservationsRequest) (*ListReservationsResponse, error)
 	CheckAvailability(context.Context, *CheckAvailabilityRequest) (*CheckAvailabilityResponse, error)
-	OrderReservation(context.Context, *OrderReservationRequest) (*OrderReservationResponse, error)
 	PaymentReservation(context.Context, *PaymentReservationRequest) (*PaymentReservationResponse, error)
+	FoodList(context.Context, *OrderFoodListReq) (*OrderFoodListRes, error)
+	OrderFood(context.Context, *OrderFoodReq) (*OrderFoodRes, error)
+	IsValidReservation(context.Context, *IsValidReq) (*IsValidRes, error)
 	mustEmbedUnimplementedReservationServiceServer()
 }
 
@@ -149,11 +171,17 @@ func (UnimplementedReservationServiceServer) ListReservations(context.Context, *
 func (UnimplementedReservationServiceServer) CheckAvailability(context.Context, *CheckAvailabilityRequest) (*CheckAvailabilityResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CheckAvailability not implemented")
 }
-func (UnimplementedReservationServiceServer) OrderReservation(context.Context, *OrderReservationRequest) (*OrderReservationResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method OrderReservation not implemented")
-}
 func (UnimplementedReservationServiceServer) PaymentReservation(context.Context, *PaymentReservationRequest) (*PaymentReservationResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method PaymentReservation not implemented")
+}
+func (UnimplementedReservationServiceServer) FoodList(context.Context, *OrderFoodListReq) (*OrderFoodListRes, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method FoodList not implemented")
+}
+func (UnimplementedReservationServiceServer) OrderFood(context.Context, *OrderFoodReq) (*OrderFoodRes, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method OrderFood not implemented")
+}
+func (UnimplementedReservationServiceServer) IsValidReservation(context.Context, *IsValidReq) (*IsValidRes, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method IsValidReservation not implemented")
 }
 func (UnimplementedReservationServiceServer) mustEmbedUnimplementedReservationServiceServer() {}
 
@@ -276,24 +304,6 @@ func _ReservationService_CheckAvailability_Handler(srv interface{}, ctx context.
 	return interceptor(ctx, in, info, handler)
 }
 
-func _ReservationService_OrderReservation_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(OrderReservationRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(ReservationServiceServer).OrderReservation(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/reservation.ReservationService/OrderReservation",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ReservationServiceServer).OrderReservation(ctx, req.(*OrderReservationRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 func _ReservationService_PaymentReservation_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(PaymentReservationRequest)
 	if err := dec(in); err != nil {
@@ -308,6 +318,60 @@ func _ReservationService_PaymentReservation_Handler(srv interface{}, ctx context
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ReservationServiceServer).PaymentReservation(ctx, req.(*PaymentReservationRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ReservationService_FoodList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(OrderFoodListReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ReservationServiceServer).FoodList(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/reservation.ReservationService/FoodList",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ReservationServiceServer).FoodList(ctx, req.(*OrderFoodListReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ReservationService_OrderFood_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(OrderFoodReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ReservationServiceServer).OrderFood(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/reservation.ReservationService/OrderFood",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ReservationServiceServer).OrderFood(ctx, req.(*OrderFoodReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ReservationService_IsValidReservation_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(IsValidReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ReservationServiceServer).IsValidReservation(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/reservation.ReservationService/IsValidReservation",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ReservationServiceServer).IsValidReservation(ctx, req.(*IsValidReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -344,12 +408,20 @@ var ReservationService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _ReservationService_CheckAvailability_Handler,
 		},
 		{
-			MethodName: "OrderReservation",
-			Handler:    _ReservationService_OrderReservation_Handler,
-		},
-		{
 			MethodName: "PaymentReservation",
 			Handler:    _ReservationService_PaymentReservation_Handler,
+		},
+		{
+			MethodName: "FoodList",
+			Handler:    _ReservationService_FoodList_Handler,
+		},
+		{
+			MethodName: "OrderFood",
+			Handler:    _ReservationService_OrderFood_Handler,
+		},
+		{
+			MethodName: "IsValidReservation",
+			Handler:    _ReservationService_IsValidReservation_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

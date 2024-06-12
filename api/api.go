@@ -42,6 +42,7 @@ func NewGin(payme, reser, use *grpc.ClientConn) *gin.Engine {
 		reservation.POST("/reservations/check", handler.ReservationCheckHandler)
 		reservation.POST("/reservations/:id/order", handler.ReservationOrderIdHandler)
 		reservation.POST("/reservations/:id/payment", handler.ReservationPaymentHandler)
+		reservation.POST("/reservations/OrderFood:id", handler.ReservationOrderFood)
 	}
 
 

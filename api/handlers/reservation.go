@@ -163,20 +163,20 @@ func (h *HandlerStruct) ReservationCheckHandler(c *gin.Context) {
 // @Accept  json
 // @Produce  json
 // @Param id path string true "Reservation ID"
-// @Param order body pb.OrderReservationRequest true "Order"
+// @Param order body pb.OrderFoodReq true "Order"
 // @Success 200 {object} string "Invalid request body"
 // @Failure 500 {object} string "Internal server error"
 // @Router /api/v1/reservations/{id}/order [post]
 func (h *HandlerStruct) ReservationOrderIdHandler(c *gin.Context) {
 	id := c.Param("id")
-	var req pb.OrderReservationRequest
+	var req pb.OrderFoodReq
 	if err := c.ShouldBindJSON(&req); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
 	req.Id = id
-	resp, err := h.Reservation.OrderReservation(context.Background(), &req)
+	resp, err := h.Reservation.OrderFood(context.Background(), &req)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
@@ -212,4 +212,34 @@ func (h *HandlerStruct) ReservationPaymentHandler(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, resp)
+}
+
+// ReservationOrderFood processes reservation for a reservation.
+// @Summary Order reservation by ID
+// @Description Order reservation by ID
+// @Tags reservation
+// @Accept  json
+// @Produce  json
+// @Param id path string true "Reservation ID"
+// @Param reservation body pb.OrderFoodReq true "Reservation Order"
+// @Success 200 {object} string "Invalid request body"
+// @Failure 500 {object} string "Internal server error"
+// @Router /api/v1/reservations/{id}/reservation [post]
+
+func (h *HandlerStruct) ReservationOrderFood(c *gin.Context) {
+	id := c.Param("id")
+    var req pb.OrderFoodReq
+    if err := c.ShouldBindJSON(&req); err!= nil {
+        c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+        return
+    }
+
+    req.Id = id
+    resp, err := h.Reservation.OrderFood(context.Background(), &req)
+    if err!= nil {
+        c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+        return
+    }
+
+    c.JSON(http.StatusOK, resp)
 }
