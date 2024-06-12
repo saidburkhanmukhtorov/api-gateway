@@ -4,18 +4,13 @@ import (
 	"api-getway/api" // Import your api package
 	"fmt"
 	"log"
+	// _ "api-getway/docs"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 )
 
-// @title Restaurant reservation system API
-// @version 1.0
-// @description API for managing Restaurant reservation syste resources
-// @host localhost:8080
-// @BasePath /api/v1
-// @in header
-// @name Authorization
+
 func main() {
 	// Set up gRPC connections
 	paymeConn, err := grpc.NewClient("localhost:50051", grpc.WithTransportCredentials(insecure.NewCredentials())) // Update the address

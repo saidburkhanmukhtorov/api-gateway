@@ -17,6 +17,11 @@ const docTemplate = `{
     "paths": {
         "/api/v1/menu": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Get all menus",
                 "consumes": [
                     "application/json"
@@ -44,6 +49,11 @@ const docTemplate = `{
                 }
             },
             "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Create new menu",
                 "consumes": [
                     "application/json"
@@ -84,6 +94,11 @@ const docTemplate = `{
         },
         "/api/v1/menu/{id}": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Get menu by ID",
                 "consumes": [
                     "application/json"
@@ -120,6 +135,11 @@ const docTemplate = `{
                 }
             },
             "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Update menu",
                 "consumes": [
                     "application/json"
@@ -165,6 +185,11 @@ const docTemplate = `{
                 }
             },
             "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Delete menu",
                 "consumes": [
                     "application/json"
@@ -203,6 +228,11 @@ const docTemplate = `{
         },
         "/api/v1/payments": {
             "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Create new payment",
                 "consumes": [
                     "application/json"
@@ -243,6 +273,11 @@ const docTemplate = `{
         },
         "/api/v1/payments/{id}": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Get payment by ID",
                 "consumes": [
                     "application/json"
@@ -279,6 +314,11 @@ const docTemplate = `{
                 }
             },
             "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Update payment",
                 "consumes": [
                     "application/json"
@@ -326,6 +366,11 @@ const docTemplate = `{
         },
         "/api/v1/reservations": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Get all reservations",
                 "consumes": [
                     "application/json"
@@ -353,6 +398,11 @@ const docTemplate = `{
                 }
             },
             "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Create new reservation",
                 "consumes": [
                     "application/json"
@@ -393,6 +443,11 @@ const docTemplate = `{
         },
         "/api/v1/reservations/check": {
             "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Check reservation",
                 "consumes": [
                     "application/json"
@@ -433,6 +488,11 @@ const docTemplate = `{
         },
         "/api/v1/reservations/{id}": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Get reservation by ID",
                 "consumes": [
                     "application/json"
@@ -469,6 +529,11 @@ const docTemplate = `{
                 }
             },
             "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Update reservation",
                 "consumes": [
                     "application/json"
@@ -514,6 +579,11 @@ const docTemplate = `{
                 }
             },
             "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Delete reservation",
                 "consumes": [
                     "application/json"
@@ -552,6 +622,11 @@ const docTemplate = `{
         },
         "/api/v1/reservations/{id}/order": {
             "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Order reservation by ID",
                 "consumes": [
                     "application/json"
@@ -577,7 +652,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/reservation.OrderReservationRequest"
+                            "$ref": "#/definitions/reservation.OrderFoodReq"
                         }
                     }
                 ],
@@ -599,6 +674,11 @@ const docTemplate = `{
         },
         "/api/v1/reservations/{id}/payment": {
             "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Process payment for reservation",
                 "consumes": [
                     "application/json"
@@ -646,6 +726,11 @@ const docTemplate = `{
         },
         "/api/v1/restaurants": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Get all restaurants",
                 "consumes": [
                     "application/json"
@@ -673,6 +758,11 @@ const docTemplate = `{
                 }
             },
             "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Create new restaurant",
                 "consumes": [
                     "application/json"
@@ -697,7 +787,7 @@ const docTemplate = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "Invalid request body\"e",
+                        "description": "Invalid request body",
                         "schema": {
                             "type": "string"
                         }
@@ -749,6 +839,11 @@ const docTemplate = `{
                 }
             },
             "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Update restaurant",
                 "consumes": [
                     "application/json"
@@ -794,6 +889,11 @@ const docTemplate = `{
                 }
             },
             "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Delete restaurant",
                 "consumes": [
                     "application/json"
@@ -940,33 +1040,19 @@ const docTemplate = `{
                 }
             }
         },
-        "reservation.OrderReservationRequest": {
+        "reservation.OrderFoodReq": {
             "type": "object",
             "properties": {
-                "created_at": {
-                    "description": "Timestamp with time zone",
-                    "type": "string"
-                },
-                "deleted_at": {
+                "count": {
                     "type": "integer"
-                },
-                "description": {
-                    "type": "string"
                 },
                 "id": {
                     "type": "string"
                 },
-                "name": {
+                "menu_id": {
                     "type": "string"
                 },
-                "price": {
-                    "type": "number"
-                },
-                "restaurant_id": {
-                    "type": "string"
-                },
-                "updated_at": {
-                    "description": "Timestamp with time zone",
+                "reservation_id": {
                     "type": "string"
                 }
             }
@@ -1076,6 +1162,13 @@ const docTemplate = `{
                 }
             }
         }
+    },
+    "securityDefinitions": {
+        "BearerAuth": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
+        }
     }
 }`
 
@@ -1083,7 +1176,7 @@ const docTemplate = `{
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
 	Host:             "localhost:8080",
-	BasePath:         "/api/v1",
+	BasePath:         "/",
 	Schemes:          []string{},
 	Title:            "Restaurant reservation system API",
 	Description:      "API for managing Restaurant reservation syste resources",

@@ -14,6 +14,7 @@ import (
 // @Tags menu
 // @Accept  json
 // @Produce  json
+// @Security BearerAuth
 // @Param id path string true "Menu ID"
 // @Success 200 {object} pb.GetMenuResponse
 // @Failure 500 {object}  string "Internal server error"
@@ -37,6 +38,7 @@ func (h *HandlerStruct) GetMenuByIdHandler(c *gin.Context) {
 // @Tags menu
 // @Accept  json
 // @Produce  json
+// @Security BearerAuth
 // @Param menu body pb.CreateMenuRequest true "Menu"
 // @Success 200 {object} string "Invalid request body"
 // @Failure 500 {object} string "Internal server error"
@@ -63,6 +65,7 @@ func (h *HandlerStruct) CreateMenuHandler(c *gin.Context) {
 // @Tags menu
 // @Accept  json
 // @Produce  json
+// @Security BearerAuth
 // @Param id path string true "Menu ID"
 // @Param menu body pb.UpdateMenuRequest true "Menu"
 // @Success 200 {object} string "Invalid request body"
@@ -92,6 +95,7 @@ func (h *HandlerStruct) UpdateMenuHandler(c *gin.Context) {
 // @Tags menu
 // @Accept  json
 // @Produce  json
+// @Security BearerAuth
 // @Param id path string true "Menu ID"
 // @Success 200 {object} string "Invalid request body"
 // @Failure 500 {object} string "Internal server error"
@@ -115,6 +119,7 @@ func (h *HandlerStruct) DeleteMenuHandler(c *gin.Context) {
 // @Tags menu
 // @Accept  json
 // @Produce  json
+// @Security BearerAuth
 // @Success 200 {object} string "Invalid request body"
 // @Failure 500 {object} string "Internal server error"
 // @Router /api/v1/menu [get]

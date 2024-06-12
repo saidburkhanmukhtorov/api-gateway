@@ -14,6 +14,7 @@ import (
 // @Tags payment
 // @Accept  json
 // @Produce  json
+// @Security BearerAuth
 // @Param payment body pb.CreatePaymentRequest true "Payment"
 // @Success 200 {object} string "Invalid request body"
 // @Failure 500 {object} string "Internal server error"
@@ -40,6 +41,7 @@ func (h *HandlerStruct) CreatePaymentHandler(c *gin.Context) {
 // @Tags payment
 // @Accept  json
 // @Produce  json
+// @Security BearerAuth
 // @Param id path string true "Payment ID"
 // @Success 200 {object} string "Invalid request body"
 // @Failure 500 {object} string "Internal server error"
@@ -63,6 +65,7 @@ func (h *HandlerStruct) GetByIdPaymentHandler(c *gin.Context) {
 // @Tags payment
 // @Accept  json
 // @Produce  json
+// @Security BearerAuth
 // @Param id path string true "Payment ID"
 // @Param payment body pb.UpdatePaymentRequest true "Payment"
 // @Success 200 {object} string "Invalid request body"

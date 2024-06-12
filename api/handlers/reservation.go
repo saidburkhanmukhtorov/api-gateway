@@ -14,6 +14,7 @@ import (
 // @Tags reservation
 // @Accept  json
 // @Produce  json
+// @Security BearerAuth
 // @Param reservation body pb.CreateReservationRequest true "Reservation"
 // @Success 200 {object} string "Invalid request body"
 // @Failure 500 {object} string "Internal server error"
@@ -40,6 +41,7 @@ func (h *HandlerStruct) CreateReservationHandler(c *gin.Context) {
 // @Tags reservation
 // @Accept  json
 // @Produce  json
+// @Security BearerAuth
 // @Success 200 {object} string "Invalid request body"
 // @Failure 500 {object} string "Internal server error"
 // @Router /api/v1/reservations [get]
@@ -61,6 +63,7 @@ func (h *HandlerStruct) GetReservationAllHandler(c *gin.Context) {
 // @Tags reservation
 // @Accept  json
 // @Produce  json
+// @Security BearerAuth
 // @Param id path string true "Reservation ID"
 // @Success 200 {object} string "Invalid request body"
 // @Failure 500 {object} string "Internal server error"
@@ -84,6 +87,7 @@ func (h *HandlerStruct) GetReservationByIdHandler(c *gin.Context) {
 // @Tags reservation
 // @Accept  json
 // @Produce  json
+// @Security BearerAuth
 // @Param id path string true "Reservation ID"
 // @Param reservation body pb.UpdateReservationRequest true "Reservation"
 // @Success 200 {object} string "Invalid request body"
@@ -113,6 +117,7 @@ func (h *HandlerStruct) UpdateReservationHandler(c *gin.Context) {
 // @Tags reservation
 // @Accept  json
 // @Produce  json
+// @Security BearerAuth
 // @Param id path string true "Reservation ID"
 // @Success 200 {object} string "Invalid request body"
 // @Failure 500 {object} string "Internal server error"
@@ -136,6 +141,7 @@ func (h *HandlerStruct) DeleteReservationHandler(c *gin.Context) {
 // @Tags reservation
 // @Accept  json
 // @Produce  json
+// @Security BearerAuth
 // @Param check body  string true "Check"
 // @Success 200 {object} string "Invalid request body"
 // @Failure 500 {object} string "Internal server error"
@@ -162,6 +168,7 @@ func (h *HandlerStruct) ReservationCheckHandler(c *gin.Context) {
 // @Tags reservation
 // @Accept  json
 // @Produce  json
+// @Security BearerAuth
 // @Param id path string true "Reservation ID"
 // @Param order body pb.OrderFoodReq true "Order"
 // @Success 200 {object} string "Invalid request body"
@@ -191,6 +198,7 @@ func (h *HandlerStruct) ReservationOrderIdHandler(c *gin.Context) {
 // @Tags reservation
 // @Accept  json
 // @Produce  json
+// @Security BearerAuth
 // @Param id path string true "Reservation ID"
 // @Param payment body pb.PaymentReservationRequest true "Payment"
 // @Success 200 {object} string "Invalid request body"
@@ -220,6 +228,7 @@ func (h *HandlerStruct) ReservationPaymentHandler(c *gin.Context) {
 // @Tags reservation
 // @Accept  json
 // @Produce  json
+// @Security BearerAuth
 // @Param id path string true "Reservation ID"
 // @Param reservation body pb.OrderFoodReq true "Reservation Order"
 // @Success 200 {object} string "Invalid request body"

@@ -1,4 +1,4 @@
-basePath: /api/v1
+basePath: /
 definitions:
   payment.CreatePaymentRequest:
     properties:
@@ -70,25 +70,15 @@ definitions:
         description: Timestamp with time zone
         type: string
     type: object
-  reservation.OrderReservationRequest:
+  reservation.OrderFoodReq:
     properties:
-      created_at:
-        description: Timestamp with time zone
-        type: string
-      deleted_at:
+      count:
         type: integer
-      description:
-        type: string
       id:
         type: string
-      name:
+      menu_id:
         type: string
-      price:
-        type: number
-      restaurant_id:
-        type: string
-      updated_at:
-        description: Timestamp with time zone
+      reservation_id:
         type: string
     type: object
   reservation.PaymentReservationRequest:
@@ -182,6 +172,8 @@ paths:
           description: Internal server error
           schema:
             type: string
+      security:
+      - BearerAuth: []
       summary: Get all menus
       tags:
       - menu
@@ -207,6 +199,8 @@ paths:
           description: Internal server error
           schema:
             type: string
+      security:
+      - BearerAuth: []
       summary: Create new menu
       tags:
       - menu
@@ -232,6 +226,8 @@ paths:
           description: Internal server error
           schema:
             type: string
+      security:
+      - BearerAuth: []
       summary: Delete menu
       tags:
       - menu
@@ -256,6 +252,8 @@ paths:
           description: Internal server error
           schema:
             type: string
+      security:
+      - BearerAuth: []
       summary: Get menu by ID
       tags:
       - menu
@@ -286,6 +284,8 @@ paths:
           description: Internal server error
           schema:
             type: string
+      security:
+      - BearerAuth: []
       summary: Update menu
       tags:
       - menu
@@ -312,6 +312,8 @@ paths:
           description: Internal server error
           schema:
             type: string
+      security:
+      - BearerAuth: []
       summary: Create new payment
       tags:
       - payment
@@ -337,6 +339,8 @@ paths:
           description: Internal server error
           schema:
             type: string
+      security:
+      - BearerAuth: []
       summary: Get payment by ID
       tags:
       - payment
@@ -367,6 +371,8 @@ paths:
           description: Internal server error
           schema:
             type: string
+      security:
+      - BearerAuth: []
       summary: Update payment
       tags:
       - payment
@@ -386,6 +392,8 @@ paths:
           description: Internal server error
           schema:
             type: string
+      security:
+      - BearerAuth: []
       summary: Get all reservations
       tags:
       - reservation
@@ -411,6 +419,8 @@ paths:
           description: Internal server error
           schema:
             type: string
+      security:
+      - BearerAuth: []
       summary: Create new reservation
       tags:
       - reservation
@@ -436,6 +446,8 @@ paths:
           description: Internal server error
           schema:
             type: string
+      security:
+      - BearerAuth: []
       summary: Delete reservation
       tags:
       - reservation
@@ -460,6 +472,8 @@ paths:
           description: Internal server error
           schema:
             type: string
+      security:
+      - BearerAuth: []
       summary: Get reservation by ID
       tags:
       - reservation
@@ -490,6 +504,8 @@ paths:
           description: Internal server error
           schema:
             type: string
+      security:
+      - BearerAuth: []
       summary: Update reservation
       tags:
       - reservation
@@ -509,7 +525,7 @@ paths:
         name: order
         required: true
         schema:
-          $ref: '#/definitions/reservation.OrderReservationRequest'
+          $ref: '#/definitions/reservation.OrderFoodReq'
       produces:
       - application/json
       responses:
@@ -521,6 +537,8 @@ paths:
           description: Internal server error
           schema:
             type: string
+      security:
+      - BearerAuth: []
       summary: Order reservation by ID
       tags:
       - reservation
@@ -552,6 +570,8 @@ paths:
           description: Internal server error
           schema:
             type: string
+      security:
+      - BearerAuth: []
       summary: Process payment for reservation
       tags:
       - reservation
@@ -578,6 +598,8 @@ paths:
           description: Internal server error
           schema:
             type: string
+      security:
+      - BearerAuth: []
       summary: Check reservation
       tags:
       - reservation
@@ -597,6 +619,8 @@ paths:
           description: Internal server error
           schema:
             type: string
+      security:
+      - BearerAuth: []
       summary: Get all restaurants
       tags:
       - restaurant
@@ -615,13 +639,15 @@ paths:
       - application/json
       responses:
         "200":
-          description: Invalid request body"e
+          description: Invalid request body
           schema:
             type: string
         "500":
           description: Internal server error
           schema:
             type: string
+      security:
+      - BearerAuth: []
       summary: Create new restaurant
       tags:
       - restaurant
@@ -647,6 +673,8 @@ paths:
           description: Internal server error
           schema:
             type: string
+      security:
+      - BearerAuth: []
       summary: Delete restaurant
       tags:
       - restaurant
@@ -701,7 +729,14 @@ paths:
           description: Internal server error
           schema:
             type: string
+      security:
+      - BearerAuth: []
       summary: Update restaurant
       tags:
       - restaurant
+securityDefinitions:
+  BearerAuth:
+    in: header
+    name: Authorization
+    type: apiKey
 swagger: "2.0"

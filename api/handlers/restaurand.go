@@ -3,6 +3,7 @@ package handlers
 import (
 	pb "api-getway/genproto/reservation" // Update this path to match your actual protobuf path
 	"context"
+	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -37,17 +38,19 @@ func (h *HandlerStruct) GetRestaurantByIdHandler(c *gin.Context) {
 // @Tags restaurant
 // @Accept  json
 // @Produce  json
+// @Security BearerAuth
 // @Param restaurant body pb.CreateRestaurantRequest true "Restaurant"
-// @Success 200 {object} string "Invalid request body"e
+// @Success 200 {object} string "Invalid request body"
 // @Failure 500 {object} string "Internal server error"
 // @Router /api/v1/restaurants [post]
 func (h *HandlerStruct) CreateRestaurantHandler(c *gin.Context) {
+	// fmt.Println( c.GetHeader("Authorization"), c.Request.Header)
 	var req pb.CreateRestaurantRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-
+	fmt.Println("11134243243243423",h.Restaurant)
 	resp, err := h.Restaurant.CreateRestaurant(context.Background(), &req)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
@@ -63,6 +66,7 @@ func (h *HandlerStruct) CreateRestaurantHandler(c *gin.Context) {
 // @Tags restaurant
 // @Accept  json
 // @Produce  json
+// @Security BearerAuth
 // @Param id path string true "Restaurant ID"
 // @Param restaurant body pb.UpdateRestaurantRequest true "Restaurant"
 // @Success 200 {object} string "Invalid request body"
@@ -92,6 +96,7 @@ func (h *HandlerStruct) UpdateRestaurantHandler(c *gin.Context) {
 // @Tags restaurant
 // @Accept  json
 // @Produce  json
+// @Security BearerAuth
 // @Param id path string true "Restaurant ID"
 // @Success 200 {object} string "Invalid request body"
 // @Failure 500 {object} string "Internal server error"
@@ -115,6 +120,7 @@ func (h *HandlerStruct) DeleteRestaurantHandler(c *gin.Context) {
 // @Tags restaurant
 // @Accept  json
 // @Produce  json
+// @Security BearerAuth
 // @Success 200 {object} string "Invalid request body"
 // @Failure 500 {object} string "Internal server error"
 // @Router /api/v1/restaurants [get]
