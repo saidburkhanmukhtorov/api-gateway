@@ -1,21 +1,8 @@
-basePath: /
 definitions:
   menu.CreateMenuRequest:
     properties:
       menu:
         $ref: '#/definitions/menu.Menu'
-    type: object
-  menu.CreateMenuResponse:
-    properties:
-      menu:
-        $ref: '#/definitions/menu.Menu'
-    type: object
-  menu.GetAllMenusResponse:
-    properties:
-      menus:
-        items:
-          $ref: '#/definitions/menu.Menu'
-        type: array
     type: object
   menu.GetMenuResponse:
     properties:
@@ -48,39 +35,10 @@ definitions:
       menu:
         $ref: '#/definitions/menu.Menu'
     type: object
-  menu.UpdateMenuResponse:
-    properties:
-      menu:
-        $ref: '#/definitions/menu.Menu'
-    type: object
   payment.CreatePaymentRequest:
     properties:
       payment:
         $ref: '#/definitions/payment.Payment'
-    type: object
-  payment.CreatePaymentResponse:
-    properties:
-      payment:
-        $ref: '#/definitions/payment.Payment'
-    type: object
-  payment.GetPaymentResponse:
-    properties:
-      payment:
-        $ref: '#/definitions/payment.Payment'
-    type: object
-  payment.PayForReservationReq:
-    properties:
-      id:
-        type: string
-      paid:
-        type: number
-      payment_method:
-        type: string
-    type: object
-  payment.PayForReservationRes:
-    properties:
-      message:
-        type: string
     type: object
   payment.Payment:
     properties:
@@ -108,11 +66,6 @@ definitions:
       payment:
         $ref: '#/definitions/payment.Payment'
     type: object
-  payment.UpdatePaymentResponse:
-    properties:
-      payment:
-        $ref: '#/definitions/payment.Payment'
-    type: object
   reservation.CheckAvailabilityResponse:
     properties:
       available:
@@ -134,6 +87,11 @@ definitions:
         allOf:
         - $ref: '#/definitions/reservation.Reservation'
         description: Error error = 2;
+    type: object
+  reservation.IsValidRes:
+    properties:
+      valid:
+        type: boolean
     type: object
   reservation.ListReservationsResponse:
     properties:
@@ -221,23 +179,6 @@ definitions:
       restaurant:
         $ref: '#/definitions/restaurant.Restaurant'
     type: object
-  restaurant.CreateRestaurantResponse:
-    properties:
-      restaurant:
-        $ref: '#/definitions/restaurant.Restaurant'
-    type: object
-  restaurant.GetRestaurantResponse:
-    properties:
-      restaurant:
-        $ref: '#/definitions/restaurant.Restaurant'
-    type: object
-  restaurant.ListRestaurantsResponse:
-    properties:
-      restaurants:
-        items:
-          $ref: '#/definitions/restaurant.Restaurant'
-        type: array
-    type: object
   restaurant.Restaurant:
     properties:
       address:
@@ -262,54 +203,18 @@ definitions:
       restaurant:
         $ref: '#/definitions/restaurant.Restaurant'
     type: object
-  restaurant.UpdateRestaurantResponse:
-    properties:
-      restaurant:
-        $ref: '#/definitions/restaurant.Restaurant'
-    type: object
-host: localhost:8080
 info:
   contact: {}
-  description: API for managing Restaurant reservation syste resources
-  title: Restaurant reservation system API
-  version: "1.0"
 paths:
-  /api/v1/menus:
+  /api/v1/menu:
     get:
       consumes:
       - application/json
-      description: Get all menus for a restaurant, optionally filtered by name, description,
-        and price range.
-      parameters:
-      - description: Restaurant ID
-        in: query
-        name: restaurant_id
-        required: true
-        type: string
-      - description: Menu item name
-        in: query
-        name: name
-        type: string
-      - description: Menu item description
-        in: query
-        name: description
-        type: string
-      - description: Minimum price
-        in: query
-        name: minPrice
-        type: string
-      - description: Maximum price
-        in: query
-        name: maxPrice
-        type: string
+      description: Get all menus
       produces:
       - application/json
       responses:
         "200":
-          description: List of menu items
-          schema:
-            $ref: '#/definitions/menu.GetAllMenusResponse'
-        "400":
           description: Invalid request body
           schema:
             type: string
@@ -319,15 +224,15 @@ paths:
             type: string
       security:
       - BearerAuth: []
-      summary: Get all menus for a restaurant
+      summary: Get all menus
       tags:
       - menu
     post:
       consumes:
       - application/json
-      description: Create new menu item
+      description: Create new menu
       parameters:
-      - description: Menu item
+      - description: Menu
         in: body
         name: menu
         required: true
@@ -336,11 +241,7 @@ paths:
       produces:
       - application/json
       responses:
-        "201":
-          description: Menu item created
-          schema:
-            $ref: '#/definitions/menu.CreateMenuResponse'
-        "400":
+        "200":
           description: Invalid request body
           schema:
             type: string
@@ -350,46 +251,16 @@ paths:
             type: string
       security:
       - BearerAuth: []
-      summary: Create new menu item
+      summary: Create new menu
       tags:
       - menu
-  /api/v1/menus/{id}:
+  /api/v1/menu/{id}:
     delete:
       consumes:
       - application/json
-      description: Delete menu item
+      description: Delete menu
       parameters:
-      - description: Menu item ID
-        in: path
-        name: id
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "204":
-          description: Menu item deleted
-          schema:
-            type: string
-        "404":
-          description: Menu item not found
-          schema:
-            type: string
-        "500":
-          description: Internal server error
-          schema:
-            type: string
-      security:
-      - BearerAuth: []
-      summary: Delete menu item
-      tags:
-      - menu
-    get:
-      consumes:
-      - application/json
-      description: Get menu item by ID
-      parameters:
-      - description: Menu item ID
+      - description: Menu ID
         in: path
         name: id
         required: true
@@ -398,11 +269,7 @@ paths:
       - application/json
       responses:
         "200":
-          description: Menu item found
-          schema:
-            $ref: '#/definitions/menu.GetMenuResponse'
-        "404":
-          description: Menu item not found
+          description: Invalid request body
           schema:
             type: string
         "500":
@@ -411,20 +278,46 @@ paths:
             type: string
       security:
       - BearerAuth: []
-      summary: Get menu item by ID
+      summary: Delete menu
+      tags:
+      - menu
+    get:
+      consumes:
+      - application/json
+      description: Get menu by ID
+      parameters:
+      - description: Menu ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/menu.GetMenuResponse'
+        "500":
+          description: Internal server error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Get menu by ID
       tags:
       - menu
     put:
       consumes:
       - application/json
-      description: Update menu item
+      description: Update menu
       parameters:
-      - description: Menu item ID
+      - description: Menu ID
         in: path
         name: id
         required: true
         type: string
-      - description: Menu item
+      - description: Menu
         in: body
         name: menu
         required: true
@@ -434,15 +327,7 @@ paths:
       - application/json
       responses:
         "200":
-          description: Menu item updated
-          schema:
-            $ref: '#/definitions/menu.UpdateMenuResponse'
-        "400":
           description: Invalid request body
-          schema:
-            type: string
-        "404":
-          description: Menu item not found
           schema:
             type: string
         "500":
@@ -451,7 +336,7 @@ paths:
             type: string
       security:
       - BearerAuth: []
-      summary: Update menu item
+      summary: Update menu
       tags:
       - menu
   /api/v1/payments:
@@ -469,11 +354,7 @@ paths:
       produces:
       - application/json
       responses:
-        "201":
-          description: Payment created
-          schema:
-            $ref: '#/definitions/payment.CreatePaymentResponse'
-        "400":
+        "200":
           description: Invalid request body
           schema:
             type: string
@@ -487,36 +368,6 @@ paths:
       tags:
       - payment
   /api/v1/payments/{id}:
-    delete:
-      consumes:
-      - application/json
-      description: Delete payment
-      parameters:
-      - description: Payment ID
-        in: path
-        name: id
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "204":
-          description: Payment deleted
-          schema:
-            type: string
-        "404":
-          description: Payment not found
-          schema:
-            type: string
-        "500":
-          description: Internal server error
-          schema:
-            type: string
-      security:
-      - BearerAuth: []
-      summary: Delete payment
-      tags:
-      - payment
     get:
       consumes:
       - application/json
@@ -531,11 +382,7 @@ paths:
       - application/json
       responses:
         "200":
-          description: Payment found
-          schema:
-            $ref: '#/definitions/payment.GetPaymentResponse'
-        "404":
-          description: Payment not found
+          description: Invalid request body
           schema:
             type: string
         "500":
@@ -567,15 +414,7 @@ paths:
       - application/json
       responses:
         "200":
-          description: Payment updated
-          schema:
-            $ref: '#/definitions/payment.UpdatePaymentResponse'
-        "400":
           description: Invalid request body
-          schema:
-            type: string
-        "404":
-          description: Payment not found
           schema:
             type: string
         "500":
@@ -585,38 +424,6 @@ paths:
       security:
       - BearerAuth: []
       summary: Update payment
-      tags:
-      - payment
-  /api/v1/payments/reservation:
-    post:
-      consumes:
-      - application/json
-      description: Pay for reservation
-      parameters:
-      - description: Payment details
-        in: body
-        name: payment
-        required: true
-        schema:
-          $ref: '#/definitions/payment.PayForReservationReq'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: Payment confirmation
-          schema:
-            $ref: '#/definitions/payment.PayForReservationRes'
-        "400":
-          description: Invalid request body
-          schema:
-            type: string
-        "500":
-          description: Internal server error
-          schema:
-            type: string
-      security:
-      - BearerAuth: []
-      summary: Pay for reservation
       tags:
       - payment
   /api/v1/reservations:
@@ -838,9 +645,9 @@ paths:
       - application/json
       description: Get list of foods for a reservation
       parameters:
-      - description: Restaurant ID
-        in: query
-        name: restaurant_id
+      - description: Reservation ID
+        in: path
+        name: id
         required: true
         type: string
       produces:
@@ -900,6 +707,37 @@ paths:
       summary: Order food for reservation
       tags:
       - reservation
+  /api/v1/reservations/{id}/valid:
+    get:
+      consumes:
+      - application/json
+      description: Check if a reservation is valid
+      parameters:
+      - description: Reservation ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Validation status
+          schema:
+            $ref: '#/definitions/reservation.IsValidRes'
+        "400":
+          description: Invalid request body
+          schema:
+            type: string
+        "500":
+          description: Internal server error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Check if a reservation is valid
+      tags:
+      - reservation
   /api/v1/reservations/check:
     get:
       consumes:
@@ -940,33 +778,11 @@ paths:
     get:
       consumes:
       - application/json
-      description: Get list of restaurants, optionally filtered by name and address,
-        and paginated.
-      parameters:
-      - description: Restaurant name
-        in: query
-        name: name
-        type: string
-      - description: Restaurant address
-        in: query
-        name: address
-        type: string
-      - description: Page number
-        in: query
-        name: page
-        type: integer
-      - description: Limit
-        in: query
-        name: limit
-        type: integer
+      description: Get all restaurants
       produces:
       - application/json
       responses:
         "200":
-          description: List of restaurants
-          schema:
-            $ref: '#/definitions/restaurant.ListRestaurantsResponse'
-        "400":
           description: Invalid request body
           schema:
             type: string
@@ -976,7 +792,7 @@ paths:
             type: string
       security:
       - BearerAuth: []
-      summary: Get list of restaurants
+      summary: Get all restaurants
       tags:
       - restaurant
     post:
@@ -993,11 +809,7 @@ paths:
       produces:
       - application/json
       responses:
-        "201":
-          description: Restaurant created
-          schema:
-            $ref: '#/definitions/restaurant.CreateRestaurantResponse'
-        "400":
+        "200":
           description: Invalid request body
           schema:
             type: string
@@ -1024,12 +836,8 @@ paths:
       produces:
       - application/json
       responses:
-        "204":
-          description: Restaurant deleted
-          schema:
-            type: string
-        "404":
-          description: Restaurant not found
+        "200":
+          description: Invalid request body
           schema:
             type: string
         "500":
@@ -1055,19 +863,13 @@ paths:
       - application/json
       responses:
         "200":
-          description: Restaurant found
-          schema:
-            $ref: '#/definitions/restaurant.GetRestaurantResponse'
-        "404":
-          description: Restaurant not found
+          description: Invalid request body
           schema:
             type: string
         "500":
           description: Internal server error
           schema:
             type: string
-      security:
-      - BearerAuth: []
       summary: Get restaurant by ID
       tags:
       - restaurant
@@ -1091,15 +893,7 @@ paths:
       - application/json
       responses:
         "200":
-          description: Restaurant updated
-          schema:
-            $ref: '#/definitions/restaurant.UpdateRestaurantResponse'
-        "400":
           description: Invalid request body
-          schema:
-            type: string
-        "404":
-          description: Restaurant not found
           schema:
             type: string
         "500":
@@ -1111,9 +905,4 @@ paths:
       summary: Update restaurant
       tags:
       - restaurant
-securityDefinitions:
-  BearerAuth:
-    in: header
-    name: Authorization
-    type: apiKey
 swagger: "2.0"

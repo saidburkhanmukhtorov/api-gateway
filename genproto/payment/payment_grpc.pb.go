@@ -19,11 +19,11 @@ import (
 const _ = grpc.SupportPackageIsVersion8
 
 const (
-	PaymentService_CreatePayment_FullMethodName      = "/payment.PaymentService/CreatePayment"
-	PaymentService_GetPayment_FullMethodName         = "/payment.PaymentService/GetPayment"
-	PaymentService_UpdatePayment_FullMethodName      = "/payment.PaymentService/UpdatePayment"
-	PaymentService_DeletePayment_FullMethodName      = "/payment.PaymentService/DeletePayment"
-	PaymentService_CheckPaymentStatus_FullMethodName = "/payment.PaymentService/CheckPaymentStatus"
+	PaymentService_CreatePayment_FullMethodName     = "/payment.PaymentService/CreatePayment"
+	PaymentService_GetPayment_FullMethodName        = "/payment.PaymentService/GetPayment"
+	PaymentService_UpdatePayment_FullMethodName     = "/payment.PaymentService/UpdatePayment"
+	PaymentService_DeletePayment_FullMethodName     = "/payment.PaymentService/DeletePayment"
+	PaymentService_PayForReservation_FullMethodName = "/payment.PaymentService/PayForReservation"
 )
 
 // PaymentServiceClient is the client API for PaymentService service.
@@ -36,7 +36,7 @@ type PaymentServiceClient interface {
 	GetPayment(ctx context.Context, in *GetPaymentRequest, opts ...grpc.CallOption) (*GetPaymentResponse, error)
 	UpdatePayment(ctx context.Context, in *UpdatePaymentRequest, opts ...grpc.CallOption) (*UpdatePaymentResponse, error)
 	DeletePayment(ctx context.Context, in *DeletePaymentRequest, opts ...grpc.CallOption) (*DeletePaymentResponse, error)
-	CheckPaymentStatus(ctx context.Context, in *CheckPaymentStatusRequest, opts ...grpc.CallOption) (*CheckPaymentStatusResponse, error)
+	PayForReservation(ctx context.Context, in *PayForReservationReq, opts ...grpc.CallOption) (*PayForReservationRes, error)
 }
 
 type paymentServiceClient struct {
@@ -87,10 +87,10 @@ func (c *paymentServiceClient) DeletePayment(ctx context.Context, in *DeletePaym
 	return out, nil
 }
 
-func (c *paymentServiceClient) CheckPaymentStatus(ctx context.Context, in *CheckPaymentStatusRequest, opts ...grpc.CallOption) (*CheckPaymentStatusResponse, error) {
+func (c *paymentServiceClient) PayForReservation(ctx context.Context, in *PayForReservationReq, opts ...grpc.CallOption) (*PayForReservationRes, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(CheckPaymentStatusResponse)
-	err := c.cc.Invoke(ctx, PaymentService_CheckPaymentStatus_FullMethodName, in, out, cOpts...)
+	out := new(PayForReservationRes)
+	err := c.cc.Invoke(ctx, PaymentService_PayForReservation_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -107,7 +107,7 @@ type PaymentServiceServer interface {
 	GetPayment(context.Context, *GetPaymentRequest) (*GetPaymentResponse, error)
 	UpdatePayment(context.Context, *UpdatePaymentRequest) (*UpdatePaymentResponse, error)
 	DeletePayment(context.Context, *DeletePaymentRequest) (*DeletePaymentResponse, error)
-	CheckPaymentStatus(context.Context, *CheckPaymentStatusRequest) (*CheckPaymentStatusResponse, error)
+	PayForReservation(context.Context, *PayForReservationReq) (*PayForReservationRes, error)
 	mustEmbedUnimplementedPaymentServiceServer()
 }
 
@@ -127,8 +127,8 @@ func (UnimplementedPaymentServiceServer) UpdatePayment(context.Context, *UpdateP
 func (UnimplementedPaymentServiceServer) DeletePayment(context.Context, *DeletePaymentRequest) (*DeletePaymentResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeletePayment not implemented")
 }
-func (UnimplementedPaymentServiceServer) CheckPaymentStatus(context.Context, *CheckPaymentStatusRequest) (*CheckPaymentStatusResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method CheckPaymentStatus not implemented")
+func (UnimplementedPaymentServiceServer) PayForReservation(context.Context, *PayForReservationReq) (*PayForReservationRes, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method PayForReservation not implemented")
 }
 func (UnimplementedPaymentServiceServer) mustEmbedUnimplementedPaymentServiceServer() {}
 
@@ -215,20 +215,20 @@ func _PaymentService_DeletePayment_Handler(srv interface{}, ctx context.Context,
 	return interceptor(ctx, in, info, handler)
 }
 
-func _PaymentService_CheckPaymentStatus_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(CheckPaymentStatusRequest)
+func _PaymentService_PayForReservation_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PayForReservationReq)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(PaymentServiceServer).CheckPaymentStatus(ctx, in)
+		return srv.(PaymentServiceServer).PayForReservation(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: PaymentService_CheckPaymentStatus_FullMethodName,
+		FullMethod: PaymentService_PayForReservation_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(PaymentServiceServer).CheckPaymentStatus(ctx, req.(*CheckPaymentStatusRequest))
+		return srv.(PaymentServiceServer).PayForReservation(ctx, req.(*PayForReservationReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -257,8 +257,8 @@ var PaymentService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _PaymentService_DeletePayment_Handler,
 		},
 		{
-			MethodName: "CheckPaymentStatus",
-			Handler:    _PaymentService_CheckPaymentStatus_Handler,
+			MethodName: "PayForReservation",
+			Handler:    _PaymentService_PayForReservation_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

@@ -1,22 +1,22 @@
 {
     "swagger": "2.0",
     "info": {
-        "description": "API for managing restaurant reservation system resources",
-        "title": "Restaurant Reservation System",
+        "description": "API for managing Restaurant reservation syste resources",
+        "title": "Restaurant reservation system API",
         "contact": {},
         "version": "1.0"
     },
     "host": "localhost:8080",
-    "basePath": "/api/v1",
+    "basePath": "/",
     "paths": {
-        "/hello": {
+        "/api/v1/menus": {
             "get": {
                 "security": [
                     {
                         "BearerAuth": []
                     }
                 ],
-                "description": "Creates a new party.",
+                "description": "Get all menus for a restaurant, optionally filtered by name, description, and price range.",
                 "consumes": [
                     "application/json"
                 ],
@@ -24,14 +24,47 @@
                     "application/json"
                 ],
                 "tags": [
-                    "Parties"
+                    "menu"
                 ],
-                "summary": "Create a new party",
+                "summary": "Get all menus for a restaurant",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Restaurant ID",
+                        "name": "restaurant_id",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Menu item name",
+                        "name": "name",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Menu item description",
+                        "name": "description",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Minimum price",
+                        "name": "minPrice",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Maximum price",
+                        "name": "maxPrice",
+                        "in": "query"
+                    }
+                ],
                 "responses": {
                     "200": {
-                        "description": "hello",
+                        "description": "List of menu items",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/menu.GetAllMenusResponse"
                         }
                     },
                     "400": {
@@ -46,6 +79,1664 @@
                             "type": "string"
                         }
                     }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Create new menu item",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "menu"
+                ],
+                "summary": "Create new menu item",
+                "parameters": [
+                    {
+                        "description": "Menu item",
+                        "name": "menu",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/menu.CreateMenuRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Menu item created",
+                        "schema": {
+                            "$ref": "#/definitions/menu.CreateMenuResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request body",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/menus/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Get menu item by ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "menu"
+                ],
+                "summary": "Get menu item by ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Menu item ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Menu item found",
+                        "schema": {
+                            "$ref": "#/definitions/menu.GetMenuResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Menu item not found",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Update menu item",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "menu"
+                ],
+                "summary": "Update menu item",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Menu item ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Menu item",
+                        "name": "menu",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/menu.UpdateMenuRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Menu item updated",
+                        "schema": {
+                            "$ref": "#/definitions/menu.UpdateMenuResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request body",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "Menu item not found",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Delete menu item",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "menu"
+                ],
+                "summary": "Delete menu item",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Menu item ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Menu item deleted",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "Menu item not found",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/payments": {
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Create new payment",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "payment"
+                ],
+                "summary": "Create new payment",
+                "parameters": [
+                    {
+                        "description": "Payment",
+                        "name": "payment",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/payment.CreatePaymentRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Payment created",
+                        "schema": {
+                            "$ref": "#/definitions/payment.CreatePaymentResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request body",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/payments/reservation": {
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Pay for reservation",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "payment"
+                ],
+                "summary": "Pay for reservation",
+                "parameters": [
+                    {
+                        "description": "Payment details",
+                        "name": "payment",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/payment.PayForReservationReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Payment confirmation",
+                        "schema": {
+                            "$ref": "#/definitions/payment.PayForReservationRes"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request body",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/payments/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Get payment by ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "payment"
+                ],
+                "summary": "Get payment by ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Payment ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Payment found",
+                        "schema": {
+                            "$ref": "#/definitions/payment.GetPaymentResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Payment not found",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Update payment",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "payment"
+                ],
+                "summary": "Update payment",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Payment ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Payment",
+                        "name": "payment",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/payment.UpdatePaymentRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Payment updated",
+                        "schema": {
+                            "$ref": "#/definitions/payment.UpdatePaymentResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request body",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "Payment not found",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Delete payment",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "payment"
+                ],
+                "summary": "Delete payment",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Payment ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Payment deleted",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "Payment not found",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/reservations": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Get list of reservations",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "reservation"
+                ],
+                "summary": "Get list of reservations",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "User ID",
+                        "name": "user_id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Restaurant ID",
+                        "name": "restaurant_id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Reservation status",
+                        "name": "status",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Start time",
+                        "name": "start_time",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "End time",
+                        "name": "end_time",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Page number",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Limit",
+                        "name": "limit",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of reservations",
+                        "schema": {
+                            "$ref": "#/definitions/reservation.ListReservationsResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Create new reservation",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "reservation"
+                ],
+                "summary": "Create new reservation",
+                "parameters": [
+                    {
+                        "description": "Reservation",
+                        "name": "reservation",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/reservation.CreateReservationRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Reservation created",
+                        "schema": {
+                            "$ref": "#/definitions/reservation.CreateReservationResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request body",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/reservations/check": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Check reservation availability",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "reservation"
+                ],
+                "summary": "Check reservation availability",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Restaurant ID",
+                        "name": "restaurant_id",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Reservation time",
+                        "name": "reservation_time",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Availability status",
+                        "schema": {
+                            "$ref": "#/definitions/reservation.CheckAvailabilityResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request body",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/reservations/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Get reservation by ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "reservation"
+                ],
+                "summary": "Get reservation by ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Reservation ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Reservation found",
+                        "schema": {
+                            "$ref": "#/definitions/reservation.GetReservationResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Reservation not found",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Update reservation",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "reservation"
+                ],
+                "summary": "Update reservation",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Reservation ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Reservation",
+                        "name": "reservation",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/reservation.UpdateReservationRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Reservation updated",
+                        "schema": {
+                            "$ref": "#/definitions/reservation.UpdateReservationResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request body",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "Reservation not found",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Delete reservation",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "reservation"
+                ],
+                "summary": "Delete reservation",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Reservation ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Reservation deleted",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "Reservation not found",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/reservations/{id}/bill": {
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Process bill for reservation",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "reservation"
+                ],
+                "summary": "Process bill for reservation",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Reservation ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Bill details",
+                        "schema": {
+                            "$ref": "#/definitions/reservation.OrderBillRes"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request body",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/reservations/{id}/foodlist": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Get list of foods for a reservation",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "reservation"
+                ],
+                "summary": "Get list of foods for reservation",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Restaurant ID",
+                        "name": "restaurant_id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of foods",
+                        "schema": {
+                            "$ref": "#/definitions/reservation.OrderFoodListRes"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request body",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/reservations/{id}/order": {
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Order food for reservation",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "reservation"
+                ],
+                "summary": "Order food for reservation",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Reservation ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Order details",
+                        "name": "order",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/reservation.OrderFoodReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Order confirmation",
+                        "schema": {
+                            "$ref": "#/definitions/reservation.OrderFoodRes"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request body",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/restaurants": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Get list of restaurants, optionally filtered by name and address, and paginated.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "restaurant"
+                ],
+                "summary": "Get list of restaurants",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Restaurant name",
+                        "name": "name",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Restaurant address",
+                        "name": "address",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Page number",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Limit",
+                        "name": "limit",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of restaurants",
+                        "schema": {
+                            "$ref": "#/definitions/restaurant.ListRestaurantsResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request body",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Create new restaurant",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "restaurant"
+                ],
+                "summary": "Create new restaurant",
+                "parameters": [
+                    {
+                        "description": "Restaurant",
+                        "name": "restaurant",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/restaurant.CreateRestaurantRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Restaurant created",
+                        "schema": {
+                            "$ref": "#/definitions/restaurant.CreateRestaurantResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request body",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/restaurants/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Get restaurant by ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "restaurant"
+                ],
+                "summary": "Get restaurant by ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Restaurant ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Restaurant found",
+                        "schema": {
+                            "$ref": "#/definitions/restaurant.GetRestaurantResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Restaurant not found",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Update restaurant",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "restaurant"
+                ],
+                "summary": "Update restaurant",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Restaurant ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Restaurant",
+                        "name": "restaurant",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/restaurant.UpdateRestaurantRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Restaurant updated",
+                        "schema": {
+                            "$ref": "#/definitions/restaurant.UpdateRestaurantResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request body",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "Restaurant not found",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Delete restaurant",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "restaurant"
+                ],
+                "summary": "Delete restaurant",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Restaurant ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Restaurant deleted",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "Restaurant not found",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "menu.CreateMenuRequest": {
+            "type": "object",
+            "properties": {
+                "menu": {
+                    "$ref": "#/definitions/menu.Menu"
+                }
+            }
+        },
+        "menu.CreateMenuResponse": {
+            "type": "object",
+            "properties": {
+                "menu": {
+                    "$ref": "#/definitions/menu.Menu"
+                }
+            }
+        },
+        "menu.GetAllMenusResponse": {
+            "type": "object",
+            "properties": {
+                "menus": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/menu.Menu"
+                    }
+                }
+            }
+        },
+        "menu.GetMenuResponse": {
+            "type": "object",
+            "properties": {
+                "menu": {
+                    "$ref": "#/definitions/menu.Menu"
+                }
+            }
+        },
+        "menu.Menu": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "description": "Timestamp with time zone",
+                    "type": "string"
+                },
+                "deleted_at": {
+                    "type": "integer"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "price": {
+                    "type": "number"
+                },
+                "restaurant_id": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "description": "Timestamp with time zone",
+                    "type": "string"
+                }
+            }
+        },
+        "menu.UpdateMenuRequest": {
+            "type": "object",
+            "properties": {
+                "menu": {
+                    "$ref": "#/definitions/menu.Menu"
+                }
+            }
+        },
+        "menu.UpdateMenuResponse": {
+            "type": "object",
+            "properties": {
+                "menu": {
+                    "$ref": "#/definitions/menu.Menu"
+                }
+            }
+        },
+        "payment.CreatePaymentRequest": {
+            "type": "object",
+            "properties": {
+                "payment": {
+                    "$ref": "#/definitions/payment.Payment"
+                }
+            }
+        },
+        "payment.CreatePaymentResponse": {
+            "type": "object",
+            "properties": {
+                "payment": {
+                    "$ref": "#/definitions/payment.Payment"
+                }
+            }
+        },
+        "payment.GetPaymentResponse": {
+            "type": "object",
+            "properties": {
+                "payment": {
+                    "$ref": "#/definitions/payment.Payment"
+                }
+            }
+        },
+        "payment.PayForReservationReq": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "paid": {
+                    "type": "number"
+                },
+                "payment_method": {
+                    "type": "string"
+                }
+            }
+        },
+        "payment.PayForReservationRes": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "payment.Payment": {
+            "type": "object",
+            "properties": {
+                "amount": {
+                    "type": "number"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "deleted_at": {
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "paid": {
+                    "type": "number"
+                },
+                "payment_method": {
+                    "type": "string"
+                },
+                "payment_status": {
+                    "type": "string"
+                },
+                "reservation_id": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                }
+            }
+        },
+        "payment.UpdatePaymentRequest": {
+            "type": "object",
+            "properties": {
+                "payment": {
+                    "$ref": "#/definitions/payment.Payment"
+                }
+            }
+        },
+        "payment.UpdatePaymentResponse": {
+            "type": "object",
+            "properties": {
+                "payment": {
+                    "$ref": "#/definitions/payment.Payment"
+                }
+            }
+        },
+        "reservation.CheckAvailabilityResponse": {
+            "type": "object",
+            "properties": {
+                "available": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "reservation.CreateReservationRequest": {
+            "type": "object",
+            "properties": {
+                "reservation": {
+                    "$ref": "#/definitions/reservation.Reservation"
+                }
+            }
+        },
+        "reservation.CreateReservationResponse": {
+            "type": "object",
+            "properties": {
+                "reservation": {
+                    "$ref": "#/definitions/reservation.Reservation"
+                }
+            }
+        },
+        "reservation.GetReservationResponse": {
+            "type": "object",
+            "properties": {
+                "reservation": {
+                    "description": "Error error = 2;",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/reservation.Reservation"
+                        }
+                    ]
+                }
+            }
+        },
+        "reservation.ListReservationsResponse": {
+            "type": "object",
+            "properties": {
+                "reservations": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/reservation.Reservation"
+                    }
+                }
+            }
+        },
+        "reservation.Menus": {
+            "type": "object",
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "price": {
+                    "type": "number"
+                },
+                "restaurant_id": {
+                    "type": "string"
+                }
+            }
+        },
+        "reservation.OrderBillRes": {
+            "type": "object",
+            "properties": {
+                "payment_id": {
+                    "type": "string"
+                }
+            }
+        },
+        "reservation.OrderFoodListRes": {
+            "type": "object",
+            "properties": {
+                "menus": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/reservation.Menus"
+                    }
+                }
+            }
+        },
+        "reservation.OrderFoodReq": {
+            "type": "object",
+            "properties": {
+                "count": {
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "menu_id": {
+                    "type": "string"
+                },
+                "reservation_id": {
+                    "type": "string"
+                }
+            }
+        },
+        "reservation.OrderFoodRes": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "reservation.Reservation": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "description": "Consider using a well-defined format like RFC 3339",
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "reservation_time": {
+                    "description": "Consider using a well-defined format like RFC 3339",
+                    "type": "string"
+                },
+                "restaurant_id": {
+                    "type": "string"
+                },
+                "status": {
+                    "description": "Consider using an enum for better type safety",
+                    "type": "string"
+                },
+                "updated_at": {
+                    "description": "Consider using a well-defined format like RFC 3339",
+                    "type": "string"
+                },
+                "user_id": {
+                    "type": "string"
+                }
+            }
+        },
+        "reservation.UpdateReservationRequest": {
+            "type": "object",
+            "properties": {
+                "reservation": {
+                    "$ref": "#/definitions/reservation.Reservation"
+                }
+            }
+        },
+        "reservation.UpdateReservationResponse": {
+            "type": "object",
+            "properties": {
+                "reservation": {
+                    "description": "Error error = 2;",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/reservation.Reservation"
+                        }
+                    ]
+                }
+            }
+        },
+        "restaurant.CreateRestaurantRequest": {
+            "type": "object",
+            "properties": {
+                "restaurant": {
+                    "$ref": "#/definitions/restaurant.Restaurant"
+                }
+            }
+        },
+        "restaurant.CreateRestaurantResponse": {
+            "type": "object",
+            "properties": {
+                "restaurant": {
+                    "$ref": "#/definitions/restaurant.Restaurant"
+                }
+            }
+        },
+        "restaurant.GetRestaurantResponse": {
+            "type": "object",
+            "properties": {
+                "restaurant": {
+                    "$ref": "#/definitions/restaurant.Restaurant"
+                }
+            }
+        },
+        "restaurant.ListRestaurantsResponse": {
+            "type": "object",
+            "properties": {
+                "restaurants": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/restaurant.Restaurant"
+                    }
+                }
+            }
+        },
+        "restaurant.Restaurant": {
+            "type": "object",
+            "properties": {
+                "address": {
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "deleted_at": {
+                    "type": "integer"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "phone_number": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                }
+            }
+        },
+        "restaurant.UpdateRestaurantRequest": {
+            "type": "object",
+            "properties": {
+                "restaurant": {
+                    "$ref": "#/definitions/restaurant.Restaurant"
+                }
+            }
+        },
+        "restaurant.UpdateRestaurantResponse": {
+            "type": "object",
+            "properties": {
+                "restaurant": {
+                    "$ref": "#/definitions/restaurant.Restaurant"
                 }
             }
         }
