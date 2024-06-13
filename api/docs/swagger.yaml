@@ -1,0 +1,39 @@
+basePath: /api/v1
+host: localhost:8080
+info:
+  contact: {}
+  description: API for managing restaurant reservation system resources
+  title: Restaurant Reservation System
+  version: "1.0"
+paths:
+  /hello:
+    get:
+      consumes:
+      - application/json
+      description: Creates a new party.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: hello
+          schema:
+            type: string
+        "400":
+          description: Invalid request body
+          schema:
+            type: string
+        "500":
+          description: Internal server error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Create a new party
+      tags:
+      - Parties
+securityDefinitions:
+  BearerAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"
